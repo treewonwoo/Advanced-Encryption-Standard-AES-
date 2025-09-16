@@ -1,20 +1,15 @@
 // mixcolumn_gate.v
-// AES MixColumns를 C 코드의 비트단위 XOR 네트워크 기반으로 구현한 Verilog 모듈
 
 `timescale 1ns / 1ps
 
 module mixcolumn_gate (
-    input  [31:0] X, // 32비트 입력 (C의 in[0]~in[3]에 해당)
-    output [31:0] Y  // 32비트 출력 (C의 out[0]~out[3]에 해당)
+    input  [31:0] X, // 32비트 입력 
+    output [31:0] Y  // 32비트 출력 
 );
 
-    // C 코드의 중간 변수들을 Verilog의 wire로 선언
-    // x[i]는 입력 X의 각 비트에 매핑됩니다. (x[i] -> X[31-i])
     wire [92:0] t;
     wire [31:0] y;
-
-    // C 코드의 논리식을 Verilog의 assign 문으로 1:1 변환
-    // C의 x[i]는 Verilog의 X[31-i]에 해당합니다.
+    
     assign t[0] = X[31-8] ^ X[31-16];
     assign t[1] = X[31-7] ^ X[31-31];
     assign t[2] = X[31-23] ^ t[0];
@@ -113,4 +108,5 @@ module mixcolumn_gate (
     // 최종 출력 비트들을 32비트 버스 Y로 결합
     assign Y = y;
     
+
 endmodule
