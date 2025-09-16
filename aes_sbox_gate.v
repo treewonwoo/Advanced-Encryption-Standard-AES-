@@ -1,5 +1,3 @@
-// aes_sbox_gate.v
-// AES S-Box를 C 코드의 논리 게이트 연산 기반으로 구현한 Verilog 모듈
 
 `timescale 1ns / 1ps
 
@@ -8,14 +6,11 @@ module aes_sbox_gate (
     output [7:0] Y  // 8비트 S-Box 출력 값
 );
 
-    // C 코드의 중간 변수들을 Verilog의 wire로 선언
     wire [92:0] t;
     wire [63:0] g;
     wire [63:0] r;
     wire [7:0]  y;
 
-    // C 코드의 논리식을 Verilog의 assign 문으로 1:1 변환
-    // C의 x[i]는 Verilog의 X[i]에 해당합니다.
     assign r[5] = X[0]; assign r[33] = X[0]; assign t[0] = X[1] ^ X[7]; assign r[6] = t[0]; assign r[53] = t[0];
     assign t[1] = X[4] ^ X[7]; assign r[12] = t[1]; assign r[59] = t[1]; assign t[2] = X[2] ^ X[4]; assign r[14] = t[2]; assign r[61] = t[2];
     assign t[3] = t[0] ^ t[2]; assign r[0] = t[3]; assign r[47] = t[3]; assign t[4] = X[2] ^ X[7]; assign r[16] = t[4]; assign r[63] = t[4];
@@ -53,8 +48,7 @@ module aes_sbox_gate (
     assign t[84] = t[76] ^ t[83]; assign t[85] = g[31] ^ t[66]; assign t[86] = t[60] ^ t[85]; assign t[87] = t[84] ^ t[86]; assign y[5] = t[87] ^ 1'b1; assign t[88] = g[25] ^ g[24];
     assign t[89] = t[66] ^ t[88]; assign t[90] = g[30] ^ t[89]; assign t[91] = t[61] ^ t[90]; assign t[92] = t[84] ^ t[91]; assign y[2] = t[92];
 
-
-    // {MSB, ..., LSB}
     assign Y = {y[7], y[6], y[5], y[4], y[3], y[2], y[1], y[0]};
+
 
 endmodule
